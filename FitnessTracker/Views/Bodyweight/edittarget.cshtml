@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Workout Plan";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Choose Your Workout Plan</h1>
+
+    <!-- Dropdown Button -->
+    <div>
+        <label for="workoutDropdown">Select Workout:</label>
+        <select id="workoutDropdown" class="form-control">
+            <option value="walking">Walking</option>
+            <option value="running">Running</option>
+            <option value="lifting">Lifting</option>
+            <option value="swimming">Swimming</option>
+            <option value="legsDays">Leg Days</option>
+            <option value="casual">Casual</option>
+        </select>
+    </div>
+
+    <!-- Workout Details -->
+    <div id="workoutDetails" class="mt-3">
+        <p id="walkingDetails" class="details-text">
+            Walking: A low-impact, steady-paced exercise that improves cardiovascular health and aids in weight loss.
+            <br />Recommended Duration: 1-2 hours.
+            <br />Calories Burned: 200-300 kcal per hour.
+        </p>
+        <p id="runningDetails" class="details-text" style="display:none;">
+            Running: A high-intensity exercise to improve endurance, cardiovascular health, and burn fat. Great for building stamina.
+            <br />Recommended Duration: 30 minutes - 1 hour.
+            <br />Calories Burned: 600-900 kcal per hour.
+        </p>
+        <p id="liftingDetails" class="details-text" style="display:none;">
+            Lifting: Strength training with weights to increase muscle mass, tone the body, and boost metabolism.
+            <br />Recommended Duration: 45 minutes - 1 hour.
+            <br />Calories Burned: 250-400 kcal per hour.
+        </p>
+        <p id="swimmingDetails" class="details-text" style="display:none;">
+            Swimming: A full-body workout that builds strength, improves flexibility, and promotes endurance while being easy on the joints.
+            <br />Recommended Duration: 1 hour.
+            <br />Calories Burned: 400-600 kcal per hour.
+        </p>
+        <p id="legsDaysDetails" class="details-text" style="display:none;">
+            Leg Days: Focuses on exercises like squats, lunges, and deadlifts to build lower body strength, improve posture, and increase power.
+            <br />Recommended Duration: 1 hour.
+            <br />Calories Burned: 350-500 kcal per hour.
+        </p>
+        <p id="casualDetails" class="details-text" style="display:none;">
+            Casual: A relaxed workout routine with moderate activity levels, suitable for those who prefer light exercise or want to stay active without intense effort.
+            <br />Recommended Duration: 30 minutes - 1 hour.
+            <br />Calories Burned: 150-250 kcal per hour.
+        </p>
+    </div>
+
+    <!-- Workout Duration and Calorie Burn Calculator -->
+    <div id="calculatorSection" class="mt-4">
+        <h3>Calculate Calories Burned</h3>
+        <label for="hoursWorkedOut">Hours Worked Out:</label>
+        <input type="number" id="hoursWorkedOut" class="form-control" placeholder="Enter hours" min="0" step="0.1">
+
+        <br>
+        <button onclick="calculateCalories()" class="btn btn-primary">Calculate</button>
+
+        <h4 id="caloriesBurned" class="mt-3" style="display:none;">Calories Burned: <span id="caloriesValue">0</span></h4>
+    </div>
+</div>
+
+<script>
+    // JavaScript to switch content based on dropdown selection
+    document.getElementById("workoutDropdown").addEventListener("change", function() {
+        var selectedValue = this.value;
+
+        // Hide all details
+        var allDetails = document.querySelectorAll(".details-text");
+        allDetails.forEach(function(detail) {
+            detail.style.display = "none";
+        });
+
+        // Show selected details
+        document.getElementById(selectedValue + "Details").style.display = "block";
+
+        // Reset calories burned text
+        document.getElementById("caloriesBurned").style.display = "none";
+        document.getElementById("caloriesValue").textContent = "0";
+    });
+
+    // Function to calculate calories burned based on selected workout and hours worked out
+    function calculateCalories() {
+        var selectedWorkout = document.getElementById("workoutDropdown").value;
+        var hoursWorkedOut = parseFloat(document.getElementById("hoursWorkedOut").value);
+        var caloriesBurned = 0;
+
+        // Validate input
+        if (isNaN(hoursWorkedOut) || hoursWorkedOut <= 0) {
+            alert("Please enter a valid number of hours.");
+            return;
+        }
+
+        // Calories burned based on selected workout
+        switch (selectedWorkout) {
+            case "walking":
+                caloriesBurned = hoursWorkedOut * 250; // average calories for walking
+                break;
+            case "running":
+                caloriesBurned = hoursWorkedOut * 750; // average calories for running
+                break;
+            case "lifting":
+                caloriesBurned = hoursWorkedOut * 325; // average calories for lifting
+                break;
+            case "swimming":
+                caloriesBurned = hoursWorkedOut * 500; // average calories for swimming
+                break;
+            case "legsDays":
+                caloriesBurned = hoursWorkedOut * 425; // average calories for leg days
+                break;
+            case "casual":
+                caloriesBurned = hoursWorkedOut * 200; // average calories for casual workout
+                break;
+            default:
+                caloriesBurned = 0;
+        }
+
+        // Show calories burned
+        document.getElementById("caloriesBurned").style.display = "block";
+        document.getElementById("caloriesValue").textContent = caloriesBurned.toFixed(0);
+    }
+</script>
